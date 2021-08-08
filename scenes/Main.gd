@@ -1,18 +1,22 @@
 extends Node2D
 
+
 ## SCENES ##
 var fruit = preload("res://scenes/Fruit.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Events.connect("eat_fruit", self, "spawn_new_fruit")
+	Events.connect("eat_fruit", self, "on_eat_fruit")
 	Events.connect("hit_body", self, "on_hit_body")
 	pass # Replace with function body.
 
 func on_hit_body():
 	$ClassicSnake.queue_free()
 	pass # Replace with function body.
-	
+
+func on_eat_fruit():
+	spawn_new_fruit()
+
 func spawn_new_fruit():
 	var instance = fruit.instance()
 	var CELL_LENGTH = 6
@@ -20,7 +24,6 @@ func spawn_new_fruit():
 	var y = ceil(rand_range(0, mx)) * CELL_LENGTH
 	var x = ceil(rand_range(0, mx)) * CELL_LENGTH
 	var p = Vector2(x, y)
-	print(p)
 	instance.position = p
 	add_child(instance)
 
