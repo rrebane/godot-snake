@@ -1,0 +1,121 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scenes/ClassicSnake.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Main.gd" type="Script" id=2]
+[ext_resource path="res://assets/bg_1.png" type="Texture" id=3]
+[ext_resource path="res://scenes/Fruit.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/CanvasLayer.gd" type="Script" id=5]
+[ext_resource path="res://assets/themes/snake_theme.tres" type="Theme" id=6]
+
+[sub_resource type="Animation" id=1]
+resource_name = "show"
+length = 0.35
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ), Color( 0.00392157, 0.2, 0.305882, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("TextContainer:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.16 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("TextContainer:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.16, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 0.843137, 0.101961, 0.129412, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("TextContainer/HBoxContainer:margin_top")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.16, 0.27, 0.35 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 80, 90, 85.0 ]
+}
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="bg_1" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+centered = false
+
+[node name="ClassicSnake" parent="." instance=ExtResource( 1 )]
+position = Vector2( 6, 6 )
+
+[node name="Fruit" parent="." instance=ExtResource( 4 )]
+position = Vector2( 24, 6 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource( 5 )
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextContainer" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+modulate = Color( 0.843137, 0.101961, 0.129412, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/TextContainer"]
+margin_left = 138.0
+margin_top = 86.0
+margin_right = 246.0
+margin_bottom = 129.0
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/TextContainer/HBoxContainer"]
+margin_right = 108.0
+margin_bottom = 22.0
+theme = ExtResource( 6 )
+text = "Game over"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="CanvasLayer/TextContainer/HBoxContainer"]
+margin_top = 26.0
+margin_right = 108.0
+margin_bottom = 43.0
+theme = ExtResource( 6 )
+text = "Retry"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
+anims/show = SubResource( 1 )
+[connection signal="pressed" from="CanvasLayer/TextContainer/HBoxContainer/Button" to="." method="_on_Button_pressed"]
