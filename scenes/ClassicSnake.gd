@@ -2,7 +2,6 @@ extends Node2D
 
 const ROTATION_STEP = 90
 const BLOCK_SIDE_LENGTH = 6
-const INCREASE_SPEED_MODIFIER = 5 # Every N fruits, speed is increased
 
 ## SCENES ##
 var link = preload("res://scenes/SnakeLink.tscn")
@@ -15,11 +14,10 @@ var direction_as_str = 'RIGHT'
 var next_scheduled_move = 'RIGHT'
 var snake_parts = []
 var cells_visited = []
-var spawn_rate = 10 # Snake moves every N frames where N is this value
+var spawn_rate = 8 # Snake moves every N frames where N is this value
 
 ## FRAME COUNTER ##
 var i = 0
-var fruits_eaten = 0
 
 func _physics_process(_delta):
 	if i % spawn_rate == 0:
@@ -88,8 +86,5 @@ func handle_move():
 		Events.emit_signal("hit_body")
 	# Check for fruit
 	if head.check_for_fruit(new_head_position):
-		fruits_eaten += 1
-		if fruits_eaten % INCREASE_SPEED_MODIFIER == 0:
-			spawn_rate = max(1, spawn_rate - 1)
 		add_to_snake_parts(previous_head_position)
 	head.position = new_head_position
