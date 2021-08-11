@@ -16,8 +16,8 @@ _global_script_class_icons={
 [application]
 
 config/name="LOWREZ_SNAKE"
-run/main_scene="res://scenes/Main.tscn"
-config/icon="res://icon.png"
+run/main_scene="res://scenes/ui/MainMenu.tscn"
+config/icon="res://assets/bg_main_menu.png"
 
 [autoload]
 
