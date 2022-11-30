@@ -10,7 +10,7 @@ onready var head = $Head
 ## MOVEMENT ##
 var head_direction = 0
 var direction = Vector2(BLOCK_SIDE_LENGTH, 0)
-var direction_as_str = 'RIGHT'
+var current_direction = 'RIGHT'
 var next_scheduled_move = 'RIGHT'
 var snake_parts = []
 var cells_visited = []
@@ -61,22 +61,22 @@ func add_to_snake_parts(pos = head.position):
 	add_child(instance)
 
 func handle_move():
-	if next_scheduled_move == 'DOWN' and direction_as_str != 'UP':
+	if next_scheduled_move == 'DOWN' and current_direction != 'UP':
 		direction = Vector2(0, BLOCK_SIDE_LENGTH)
 		head.rotation_degrees = 90
-		direction_as_str = 'DOWN'
-	if next_scheduled_move == 'UP' and direction_as_str != 'DOWN':
+		current_direction = 'DOWN'
+	if next_scheduled_move == 'UP' and current_direction != 'DOWN':
 		direction = Vector2(0, -BLOCK_SIDE_LENGTH)
 		head.rotation_degrees =  -90
-		direction_as_str = 'UP'
-	if next_scheduled_move == 'LEFT' and direction_as_str != 'RIGHT':
+		current_direction = 'UP'
+	if next_scheduled_move == 'LEFT' and current_direction != 'RIGHT':
 		direction = Vector2(-BLOCK_SIDE_LENGTH, 0)
 		head.rotation_degrees = 180
-		direction_as_str = 'LEFT'
-	if next_scheduled_move == 'RIGHT' and direction_as_str != 'LEFT':
+		current_direction = 'LEFT'
+	if next_scheduled_move == 'RIGHT' and current_direction != 'LEFT':
 		direction = Vector2(BLOCK_SIDE_LENGTH, 0)
 		head.rotation_degrees = 0
-		direction_as_str = 'RIGHT'
+		current_direction = 'RIGHT'
 	var previous_head_position = head.position
 	var new_head_position = head.position + direction
 	#	Check for walls
