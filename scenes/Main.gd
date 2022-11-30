@@ -7,10 +7,10 @@ var fruit = preload("res://scenes/Fruit.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Events.connect("eat_fruit", self, "on_eat_fruit")
-	Events.connect("hit_body", self, "on_hit_body")
+	Events.connect("hit", self, "on_hit")
 	pass # Replace with function body.
 
-func on_hit_body():
+func on_hit():
 	$ClassicSnake.queue_free()
 	pass # Replace with function body.
 

@@ -38,7 +38,7 @@ func _physics_process(_delta):
 		# Check for collision with body
 		for p in cells_visited:
 			if head.position == p:
-				Events.emit_signal("hit_body")
+				Events.emit_signal("hit")
 	i = i + 1
 
 
@@ -81,9 +81,9 @@ func handle_move():
 	var new_head_position = head.position + direction
 	#	Check for walls
 	if head.global_position.x < 3 or head.global_position.x > 381:
-		Events.emit_signal("hit_body")
+		Events.emit_signal("hit")
 	if head.global_position.y < 3 or head.global_position.y > 211:
-		Events.emit_signal("hit_body")
+		Events.emit_signal("hit")
 	# Check for fruit
 	if head.check_for_fruit(new_head_position):
 		add_to_snake_parts(previous_head_position)

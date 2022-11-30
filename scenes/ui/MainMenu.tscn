@@ -51,5 +51,6 @@ margin_right = 34.0
 margin_bottom = 38.0
 theme = ExtResource( 2 )
 text = "Quit"
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Play" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Quit" to="." method="_on_Quit_pressed"]
