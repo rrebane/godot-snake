@@ -14,13 +14,13 @@ var direction_as_str = 'RIGHT'
 var next_scheduled_move = 'RIGHT'
 var snake_parts = []
 var cells_visited = []
-var spawn_rate = 8 # Snake moves every N frames where N is this value
+var tick_interval = 8 # Snake moves every N frames where N is this value
 
 ## FRAME COUNTER ##
 var i = 0
 
 func _physics_process(_delta):
-	if i % spawn_rate == 0:
+	if i % tick_interval == 0:
 		cells_visited = []
 		var previous_head_position = head.position
 		cells_visited.append(previous_head_position)
@@ -44,7 +44,7 @@ func _physics_process(_delta):
 
 func _input(event):
 	# Need to "schedule" this move because I only want to change direction once
-	# every N frames where N is spawn_rate
+	# every N frames where N is tick_interval
 	if(event.is_action_pressed("ui_down")):
 		next_scheduled_move = 'DOWN'
 	if(event.is_action_pressed("ui_up")):
