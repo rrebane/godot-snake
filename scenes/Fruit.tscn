@@ -5,9 +5,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 2, 2 )
 
-[node name="Fruit" type="Area2D" groups=[
-"Fruit",
-]]
+[node name="Fruit" type="Area2D" groups=["Fruit"]]
 
 [node name="Fruit" type="Sprite" parent="."]
 z_index = 1

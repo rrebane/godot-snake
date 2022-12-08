@@ -16,6 +16,8 @@ var snake_parts = []
 var cells_visited = []
 var tick_interval = 8 # Snake moves every N frames where N is this value
 
+signal move_completed
+
 ## FRAME COUNTER ##
 var i = 0
 
@@ -81,6 +83,7 @@ func move_head():
 
 	head.position = new_head_position
 	
+	emit_signal("move_completed")
 
 func move_body(snake_parts, previous_head_position):
 	var cells_visited = []
@@ -103,4 +106,119 @@ func check_collision_with_body(cells_visited, head):
 	for p in cells_visited:
 		if head.position == p:
 			Events.emit_signal("hit")
+
+func move(direction):
+	if direction == "LEFT":
+		if current_direction == "DOWN":
+			next_scheduled_move = "RIGHT"
+		elif current_direction == "UP":
+			next_scheduled_move = "LEFT"
+		elif current_direction == "LEFT":
+			next_scheduled_move = "DOWN"
+		elif current_direction == "RIGHT":
+			next_scheduled_move = "UP"
+	elif direction == "RIGHT":
+		if current_direction == "DOWN":
+			next_scheduled_move = "LEFT"
+		elif current_direction == "UP":
+			next_scheduled_move = "RIGHT"
+		elif current_direction == "LEFT":
+			next_scheduled_move = "UP"
+		elif current_direction == "RIGHT":
+			next_scheduled_move = "DOWN"
+
+func can_move(direction):
+	var new_position = head.global_position
 	
+	if direction == "LEFT":
+		if current_direction == "DOWN":
+			new_position += Vector2(BLOCK_SIDE_LENGTH, 0)
+		elif current_direction == "UP":
+			new_position += Vector2(-BLOCK_SIDE_LENGTH, 0)
+		elif current_direction == "LEFT":
+			new_position += Vector2(0, BLOCK_SIDE_LENGTH)
+		elif current_direction == "RIGHT":
+			new_position += Vector2(0, -BLOCK_SIDE_LENGTH)
+	elif direction == "RIGHT":
+		if current_direction == "DOWN":
+			new_position += Vector2(-BLOCK_SIDE_LENGTH, 0)
+		elif current_direction == "UP":
+			new_position += Vector2(BLOCK_SIDE_LENGTH, 0)
+		elif current_direction == "LEFT":
+			new_position += Vector2(0, -BLOCK_SIDE_LENGTH)
+		elif current_direction == "RIGHT":
+			new_position += Vector2(0, BLOCK_SIDE_LENGTH)
+	elif direction == "FORWARD":
+		if current_direction == "DOWN":
+			new_position += Vector2(0, BLOCK_SIDE_LENGTH)
+		elif current_direction == "UP":
+			new_position += Vector2(0, -BLOCK_SIDE_LENGTH)
+		elif current_direction == "LEFT":
+			new_position += Vector2(-BLOCK_SIDE_LENGTH, 0)
+		elif current_direction == "RIGHT":
+			new_position += Vector2(BLOCK_SIDE_LENGTH, 0)
+	else:
+		return false
+
+	# Check edges
+	if new_position.x < 3 or new_position.x > 381:
+		return false
+	if new_position.y < 3 or new_position.y > 211:
+		return false
+
+	# Check body
+	# TODO
+	
+	return true
+
+func fruit_direction():
+	var fruits = get_tree().get_nodes_in_group("Fruit")
+	
+	var fruit_direction = null
+	
+	for fruit in fruits:
+		var pos = fruit.global_position - head.global_position
+		
+		if abs(pos.x) < 6:
+			if pos.y < 0:
+				fruit_direction = "UP"
+			else:
+				fruit_direction = "DOWN"
+			break
+		if abs(pos.y) < 6:
+			if pos.x < 0:
+				fruit_direction = "LEFT"
+			else:
+				fruit_direction = "RIGHT"
+			break
+
+	if current_direction == "DOWN":
+		if fruit_direction == "DOWN":
+			return "FORWARD"
+		elif fruit_direction == "LEFT":
+			return "RIGHT"
+		elif fruit_direction == "RIGHT":
+			return "LEFT"
+	elif current_direction == "UP":
+		if fruit_direction == "UP":
+			return "FORWARD"
+		elif fruit_direction == "RIGHT":
+			return "RIGHT"
+		elif fruit_direction == "LEFT":
+			return "LEFT"
+	elif current_direction == "LEFT":
+		if fruit_direction == "LEFT":
+			return "FORWARD"
+		elif fruit_direction == "UP":
+			return "RIGHT"
+		elif fruit_direction == "DOWN":
+			return "LEFT"
+	elif current_direction == "RIGHT":
+		if fruit_direction == "RIGHT":
+			return "FORWARD"
+		elif fruit_direction == "DOWN":
+			return "RIGHT"
+		elif fruit_direction == "UP":
+			return "LEFT"
+
+	return null
